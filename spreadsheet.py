@@ -7,8 +7,8 @@ summary_header = ['feature','test', 'author', 'comments']
 summary = summary_header
 
 def today_check(date):
-    DATE_RANGE_START = datetime.datetime(day=1, month=1, year=2019)
-    DATE_RANGE_END = datetime.datetime(day=27, month=1, year=2019)
+    DATE_RANGE_START = datetime.datetime(day=1, month=1, year=2)
+    DATE_RANGE_END = datetime.datetime(day=27, month=1, year=2029)
     DATE_TEST_FINISH = datetime.datetime.strptime(date, "%d/%m/%Y")
     today_check = DATE_RANGE_START <= DATE_TEST_FINISH <= DATE_RANGE_END
     return today_check
@@ -50,13 +50,20 @@ for feature_name, gd_key in g_docs.items():
     summary_list = summary_list + stat_lines
 
 print(len(summary_list))
+final_array = []
+for list in summary_list:
+    if list[2] == 'Finished' and today_check(list[6]):
+        single_list = [list[9]] + [list[3]] + [list[4]] + [list[8]]
+        final_array.append(single_list)
     #     # for delete_index in unwanted:
     #     #     del list[delete_index]
     # summary_list.append(sheet_lines)
-
+print(len(final_array), final_array)
 # print(summary_list)
 
-print( unique_autors(summary_list))
+# print( unique_autors(summary_list))
+
+
 
 # print(u_autors)
 #
@@ -76,8 +83,16 @@ print( unique_autors(summary_list))
 #             stat_line.insert(0, feature_name)
 #             summary.append(stat_line)
 
-# summary_sheet.insert_row(line)
 
+cell_list = summary_sheet.range('A1:c3')
+a = [['1','2'],['3','4']]
+
+# summary_sheet.insert_row(a)
+#
+# for row in cell_list:
+#     cell.value = 'O_o'
+
+summary_sheet.update_cells(a)
 
 # print(type(summary_list), summary)
 # print(len(summary))
