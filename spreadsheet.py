@@ -1,14 +1,14 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import numpy as np
 import datetime
 
 summary_header = ['feature','test', 'author', 'comments']
 summary = summary_header
+cells_count = len(summary_header)
 
 def today_check(date):
-    DATE_RANGE_START = datetime.datetime(day=1, month=1, year=2)
-    DATE_RANGE_END = datetime.datetime(day=27, month=1, year=2029)
+    DATE_RANGE_START = datetime.datetime(day=1, month=1, year=2019)
+    DATE_RANGE_END = datetime.datetime(day=27, month=1, year=2019)
     DATE_TEST_FINISH = datetime.datetime.strptime(date, "%d/%m/%Y")
     today_check = DATE_RANGE_START <= DATE_TEST_FINISH <= DATE_RANGE_END
     return today_check
@@ -40,7 +40,6 @@ summary_sheet = client.open('new_table test').worksheet('summary')
 summary_list = []
 stat_line = []
 sheet_lines = []
-# unwanted = [0,1,2,4,5]
 
 for feature_name, gd_key in g_docs.items():
     sheet_lines = client.open_by_key(gd_key).worksheet('Automation progress').get_all_values()
@@ -49,51 +48,36 @@ for feature_name, gd_key in g_docs.items():
         list.extend([feature_name])
     summary_list = summary_list + stat_lines
 
-print(len(summary_list))
+print('total lines in doc: ', len(summary_list))
+
 final_array = []
 for list in summary_list:
     if list[2] == 'Finished' and today_check(list[6]):
         single_list = [list[9]] + [list[3]] + [list[4]] + [list[8]]
         final_array.append(single_list)
-    #     # for delete_index in unwanted:
-    #     #     del list[delete_index]
-    # summary_list.append(sheet_lines)
+
 print(len(final_array), final_array)
-# print(summary_list)
+rows_count = len(final_array)
 
-# print( unique_autors(summary_list))
+cell_list = summary_sheet.range(1,1, cells_count, rows_count)
+# worksheet.range(1, 1, 7, 2) a1:b7
 
-
-
-# print(u_autors)
-#
-# for autor in u_autors:
-#     for line in sheet_lines:
-#         if line[4] == autor \
-#                 and line[2] == 'Finished' and today_check(line[6]):
-#             line.remove(line[0])
-#
-#
-#             # del stat_line[0,1]
-#             # stat_line.append(feature_name)
-#             # stat_line.append(line[3])
-#             # stat_line.append(line[4])
-#             # stat_line.append(line[8])
-#             # stat_line = line[3] + line[4] + line[8]
-#             stat_line.insert(0, feature_name)
-#             summary.append(stat_line)
-
-
-cell_list = summary_sheet.range('A1:c3')
-a = [['1','2'],['3','4']]
+# a = ['1','2','3','4']
+# for cell, aa in zip(cell_list, a):
+#     cell.value = aa
 
 # summary_sheet.insert_row(a)
-#
-# for row in cell_list:
-#     cell.value = 'O_o'
+sum_st = []
+for list in final_array:
+    for st in list:
+        sum_st.append(st)
 
-summary_sheet.update_cells(a)
+print(len(sum_st), sum_st)
 
-# print(type(summary_list), summary)
+for cell, st in zip(cell_list, sum_st):
+    cell.value = st
+
+summary_sheet.update_cells(cell_list)
+
 # print(len(summary))
 
