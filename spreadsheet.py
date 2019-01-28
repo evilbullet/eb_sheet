@@ -13,13 +13,15 @@ def today_check(date):
     today_check = DATE_RANGE_START <= DATE_TEST_FINISH <= DATE_RANGE_END
     return today_check
 
-def unique_autors(seq):
+def unique_autors(summary_lists):
     # order preserving
-    autors = []
-    for e in seq:
-        if e not in autors:
-            autors.append(e)
-    return autors
+    print(summary_lists)
+    all_autors = [row[4] for row in summary_lists]
+    authors = []
+    for e in all_autors:
+        if e not in authors and e is not '':
+            authors.append(e)
+    return authors
 #
 # def sort_list_by_date(list):
 #     # sorted_list = sorted(list, key=itemgetter(6))
@@ -36,32 +38,47 @@ g_docs = {'Feature 1': '1MvLGkcfl5msJEb8DwQXjYaq8HVTi6cJk_JbzIKQAjrA',
 summary_sheet = client.open('new_table test').worksheet('summary')
 
 summary_list = []
-i = 0
 stat_line = []
+sheet_lines = []
+# unwanted = [0,1,2,4,5]
+
 for feature_name, gd_key in g_docs.items():
-    g_sheet = \
-        client.open_by_key(gd_key).worksheet('Automation progress')
-    sheet_lines = g_sheet.get_all_values()
+    sheet_lines = client.open_by_key(gd_key).worksheet('Automation progress').get_all_values()
+    stat_lines = sheet_lines
+    for list in stat_lines:
+        list.extend([feature_name])
+    summary_list = summary_list + stat_lines
 
-    list_of_autors = [row[4] for row in sheet_lines]
-    u_autors = unique_autors(list_of_autors)
+print(len(summary_list))
+    #     # for delete_index in unwanted:
+    #     #     del list[delete_index]
+    # summary_list.append(sheet_lines)
 
-    for autor in u_autors:
-        for line in sheet_lines:
-            if line[4] == autor \
-                    and line[2] == 'Finished' and today_check(line[6]):
-                stat_line.append(feature_name)
-                stat_line.append(line[3])
-                stat_line.append(line[4])
-                stat_line.append(line[8])
-                # stat_line = line[3] + line[4] + line[8]
-                # stat_line.insert(feature_name, index=1)
-                summary.append(stat_line)
-                i = i+ 1
+# print(summary_list)
 
-    # summary_sheet.insert_row(line)
+print( unique_autors(summary_list))
+
+# print(u_autors)
+#
+# for autor in u_autors:
+#     for line in sheet_lines:
+#         if line[4] == autor \
+#                 and line[2] == 'Finished' and today_check(line[6]):
+#             line.remove(line[0])
+#
+#
+#             # del stat_line[0,1]
+#             # stat_line.append(feature_name)
+#             # stat_line.append(line[3])
+#             # stat_line.append(line[4])
+#             # stat_line.append(line[8])
+#             # stat_line = line[3] + line[4] + line[8]
+#             stat_line.insert(0, feature_name)
+#             summary.append(stat_line)
+
+# summary_sheet.insert_row(line)
 
 
-print(type(summary_list), summary)
-print(len(summary))
+# print(type(summary_list), summary)
+# print(len(summary))
 
