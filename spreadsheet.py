@@ -1,17 +1,31 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import datetime
+from datetime import datetime, timedelta
+# from datetime import *
 
 summary_header = ['feature','test', 'author', 'comments']
-summary = summary_header
-cells_count = len(summary_header)
+cols_count = len(summary_header)
 
 def today_check(date):
-    DATE_RANGE_START = datetime.datetime(day=1, month=1, year=2019)
-    DATE_RANGE_END = datetime.datetime(day=27, month=1, year=2019)
-    DATE_TEST_FINISH = datetime.datetime.strptime(date, "%d/%m/%Y")
+    DATE_RANGE_START = datetime(day=1, month=1, year=2019)
+    DATE_RANGE_END = datetime(day=27, month=1, year=2019)
+    DATE_TEST_FINISH = datetime.strptime(date, "%d/%m/%Y")
     today_check = DATE_RANGE_START <= DATE_TEST_FINISH <= DATE_RANGE_END
     return today_check
+
+def number_of_week():
+    today = datetime.today()
+    week_number = today.strftime("%W %Y")
+
+    date_obj = datetime.strptime\
+        (datetime.today().strftime('%d/%m/%Y'), '%d/%m/%Y')
+
+    start_of_week = date_obj - timedelta(days=date_obj.weekday())  # Monday
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday
+    # print(start_of_week)
+    # print(end_of_week)
+    # print(week_number)
+    return [week_number, start_of_week, end_of_week]
 
 def unique_autors(summary_lists):
     # order preserving
@@ -22,7 +36,7 @@ def unique_autors(summary_lists):
         if e not in authors and e is not '':
             authors.append(e)
     return authors
-#
+
 # def sort_list_by_date(list):
 #     # sorted_list = sorted(list, key=itemgetter(6))
 #     list.sort(key=lambda x: datetime.datetime.strptime(x.split(None, 1)[-1], '%d/%m/%y'))
@@ -47,10 +61,16 @@ for feature_name, gd_key in g_docs.items():
     for list in stat_lines:
         list.extend([feature_name])
     summary_list = summary_list + stat_lines
-
 print('total lines in doc: ', len(summary_list))
 
 final_array = []
+final_array.append(['Week #: ' + number_of_week()[0],
+                    'Week start: ' + number_of_week()[1].strftime('%Y/%m/%d') +
+                    ' / '
+                    'Week end: ' + number_of_week()[2].strftime('%Y/%m/%d'),
+                    '',
+                    ''])
+final_array.append(summary_header)
 for list in summary_list:
     if list[2] == 'Finished' and today_check(list[6]):
         single_list = [list[9]] + [list[3]] + [list[4]] + [list[8]]
@@ -59,14 +79,13 @@ for list in summary_list:
 print(len(final_array), final_array)
 rows_count = len(final_array)
 
-cell_list = summary_sheet.range(1,1, cells_count, rows_count)
+cell_list = summary_sheet.range(1,1, rows_count, cols_count )
 # worksheet.range(1, 1, 7, 2) a1:b7
 
 # a = ['1','2','3','4']
 # for cell, aa in zip(cell_list, a):
 #     cell.value = aa
 
-# summary_sheet.insert_row(a)
 sum_st = []
 for list in final_array:
     for st in list:
@@ -78,6 +97,4 @@ for cell, st in zip(cell_list, sum_st):
     cell.value = st
 
 summary_sheet.update_cells(cell_list)
-
-# print(len(summary))
-
+# summary_sheet.insert_row(a)
