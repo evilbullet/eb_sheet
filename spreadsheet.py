@@ -40,6 +40,10 @@ def add_week_header(arr):
                         ' - ' + number_of_week()[2].strftime('%Y/%m/%d'), '', ''])
     return arr
 
+def make_datetime(lst):
+    date_str = lst[4]
+    return datetime.strptime(date_str, '%d/%m/%Y')
+
 # def sort_list_by_date(list):
 #     # sorted_list = sorted(list, key=itemgetter(6))
 #     list.sort(key=lambda x: datetime.datetime.strptime(x.split(None, 1)[-1], '%d/%m/%y'))
@@ -67,18 +71,20 @@ for feature_name, gd_key in g_docs.items():
 print('total lines in doc: ', len(summary_list))
 
 final_array = []
-final_array = add_week_header(final_array)
+# final_array = add_week_header(final_array)
+# final_array.append(summary_header)
 
-final_array.append(summary_header)
 for list in summary_list:
-    if list[2] == 'Finished' and today_check(list[6]):
-        single_list = [list[9]] + [list[3]] + [list[4]] + [list[8]]
+    if list[2] == 'Finished' and today_check(list[6]) and list[6] is not '':
+        single_list = [list[9]] + [list[3]] + [list[4]] + [list[8]] + [list[6]]
         final_array.append(single_list)
 
-print(len(final_array), final_array)
-rows_count = len(final_array)
+final_array = sorted(final_array, key=make_datetime)
 
-cell_list = summary_sheet.range(1,1, rows_count, cols_count )
+print(len(final_array), final_array)
+
+rows_count = len(final_array)
+# cell_list = summary_sheet.range(1,1, rows_count, cols_count )
 
 sum_st = []
 for list in final_array:
@@ -87,8 +93,8 @@ for list in final_array:
 
 print(len(sum_st), sum_st)
 
-for cell, st in zip(cell_list, sum_st):
-    cell.value = st
-
-summary_sheet.update_cells(cell_list)
+# for cell, st in zip(cell_list, sum_st):
+#     cell.value = st
+#
+# summary_sheet.update_cells(cell_list)
 # summary_sheet.insert_row(a)
