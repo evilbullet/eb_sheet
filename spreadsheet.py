@@ -22,9 +22,6 @@ def number_of_week():
 
     start_of_week = date_obj - timedelta(days=date_obj.weekday())  # Monday
     end_of_week = start_of_week + timedelta(days=6)  # Sunday
-    # print(start_of_week)
-    # print(end_of_week)
-    # print(week_number)
     return [week_number, start_of_week, end_of_week]
 
 def unique_autors(summary_lists):
@@ -36,6 +33,12 @@ def unique_autors(summary_lists):
         if e not in authors and e is not '':
             authors.append(e)
     return authors
+
+def add_week_header(arr):
+    arr.append(['Week - ' + number_of_week()[0],
+                        'Week start - end: ' + number_of_week()[1].strftime('%Y/%m/%d') +
+                        ' - ' + number_of_week()[2].strftime('%Y/%m/%d'), '', ''])
+    return arr
 
 # def sort_list_by_date(list):
 #     # sorted_list = sorted(list, key=itemgetter(6))
@@ -64,12 +67,8 @@ for feature_name, gd_key in g_docs.items():
 print('total lines in doc: ', len(summary_list))
 
 final_array = []
-final_array.append(['Week #: ' + number_of_week()[0],
-                    'Week start: ' + number_of_week()[1].strftime('%Y/%m/%d') +
-                    ' / '
-                    'Week end: ' + number_of_week()[2].strftime('%Y/%m/%d'),
-                    '',
-                    ''])
+final_array = add_week_header(final_array)
+
 final_array.append(summary_header)
 for list in summary_list:
     if list[2] == 'Finished' and today_check(list[6]):
@@ -80,11 +79,6 @@ print(len(final_array), final_array)
 rows_count = len(final_array)
 
 cell_list = summary_sheet.range(1,1, rows_count, cols_count )
-# worksheet.range(1, 1, 7, 2) a1:b7
-
-# a = ['1','2','3','4']
-# for cell, aa in zip(cell_list, a):
-#     cell.value = aa
 
 sum_st = []
 for list in final_array:
