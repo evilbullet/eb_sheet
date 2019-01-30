@@ -1,7 +1,9 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime, timedelta
-# from datetime import *
+
+# test doc --->
+# https://docs.google.com/spreadsheets/d/1MvLGkcfl5msJEb8DwQXjYaq8HVTi6cJk_JbzIKQAjrA/edit#gid=716963912
 
 summary_header = ['feature','test', 'author', 'comments', 'date']
 cols_count = len(summary_header)
