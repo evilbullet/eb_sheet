@@ -86,4 +86,3 @@ print('update cells:', len(sum_st), sum_st)
 for cell, st in zip(cell_list, sum_st):
     cell.value = st
 summary_sheet.update_cells(cell_list)
-# summary_sheet.insert_row(a)
