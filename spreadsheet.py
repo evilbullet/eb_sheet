@@ -41,7 +41,17 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', s
 client = gspread.authorize(creds)
 
 g_docs = {'Feature 1': '1MvLGkcfl5msJEb8DwQXjYaq8HVTi6cJk_JbzIKQAjrA',
-         'Feature 2': '1Ht9LsUvqLiwy1IV-bgM9A7F2dnYschja8XX3EnKTMJE'}
+         'Feature 2': '1Ht9LsUvqLiwy1IV-bgM9A7F2dnYschja8XX3EnKTMJE',
+         'Feature 3': '1kViBTBc90DPMnWHZ_WZghcalHcJmkASnA975zmmLPsM',
+'Feature 4': '1A9TzAkFXSoT_CAQe6twAn2wYL_1nDTiNyjhh8faZ4r8'
+'Feature 5': '10BMNqsqAkRLZwXZRdxKXVVWBnjG_i2_HZxrSpTtn5x0'
+'Feature 6': '1RwtIusKuKtJJBnjFKt_zbSmpB2XPtNhF1SdZU7pyQxU'
+'Feature 7': '1FVuedc19h17SSWpO4tHZaekBnqnu8Lr-IynZ1YLyXgI'
+'Feature 8': '1sABAOwlE4QpK5MEn6NFLkXqb4Tns3ApFN6l24Y4YF2g'
+'Feature 9': '1Uy-g5HQ2RCQFKNH3lbXKljJTvRRXw_ly7XU-1yps6l8'
+'Feature 10': '1lO5lnsfbl9htgLXfKwa5rmQeGs6cKbe34W367pm8uns'
+'Feature 11': '1ATYskL9uByTr7EP09P77DnTeErS4mz8aNPf3e-dFVT8'
+'Feature 12': '1JXcsUm9OzluzYNsaRSaA_lEz_xhJFH_UNrma6unNIyc'
 
 summary_sheet = client.open('new_table test').worksheet('summary')
 
