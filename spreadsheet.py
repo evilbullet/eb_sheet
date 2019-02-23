@@ -75,7 +75,7 @@ print(len(final_array), type(final_array) )
 
 rows_count = len(final_array)
 cell_list = summary_sheet.range(1,1, rows_count, cols_count )
-
+#ddddd
 sum_st = []
 for list in final_array:
     for st in list:
