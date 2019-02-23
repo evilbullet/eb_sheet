@@ -92,15 +92,16 @@ g_docs_finished = {
 'feature 1':'1DGdnyxgjKgZ1mN3DFqeFxcOQ9nOp_FQFg-6pR8xbWqs',
 'feature 2':'192huiwOlSMtzi-nBftwdCwPvzhZTdhznqbK46g-jKQk',
 'feature 3':'1Hnzfjur1rqse7gecHMj9s_VQw8-hct6gl-VqgdQj5XE',
-'feature 4':'1PJkKI9zvjBT8etEmrQjqkn9GEBlvUTC--gl-MPX1o64',
+    'feature 4':'1PJkKI9zvjBT8etEmrQjqkn9GEBlvUTC--gl-MPX1o64',
 'feature 5':'1aq_gcD2vrtIClhhZVteMT62sRHjE_UXX95Hl6LnQSz8',
 'feature 6':'1XDCESv6trwAgoul1X3IE7l-fCh3dc43eFrcX3Qfo1_g'
 }
 
-summary_sheet = client.open('new_summary test').worksheet('all_new')
+summary_sheet = client.open('new_summary test').worksheet('parser')
 all_rows = collect_all_docs()
 performances = []
 print(all_rows)
+# ADASDADS
 
 for idx, row in enumerate(all_rows):
     if row['Status'] is not '' and row['Finished On'] is not '' and row['Finished On'] is not 'Finished On':
