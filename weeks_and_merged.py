@@ -8,7 +8,7 @@ from collections import Counter
 # test doc --->
 # https://docs.google.com/spreadsheets/d/1MvLGkcfl5msJEb8DwQXjYaq8HVTi6cJk_JbzIKQAjrA/edit#gid=716963912
 
-summary_header = ['Title', 'Assignee', 'PR', 'Finished On', 'Days per test', 'Status', 'Merged', 'feature 0']
+summary_header = ['Title', 'Assignee', 'PR', 'Finished On', 'Days per test', 'Status', 'Merged']
 
 cols_count = len(summary_header)
 
@@ -51,7 +51,7 @@ def insert_week_headers(test_date):
 
     return ('Week - ' + week_number, ['Week - ' + week_number,
             'Week start - end: ' + start_of_week.strftime('%Y/%m/%d') +
-            ' - ' + end_of_week.strftime('%Y/%m/%d'), '' , '','','','',''])
+            ' - ' + end_of_week.strftime('%Y/%m/%d'), '' , '','','',''])
 
 def make_datetime(lst):
     if lst[6] == '' or lst[6] == 'Started On'or lst[6]=='Finished On':
@@ -97,7 +97,7 @@ g_docs_finished = {
 'feature 6':'1XDCESv6trwAgoul1X3IE7l-fCh3dc43eFrcX3Qfo1_g'
 }
 
-summary_sheet = client.open('new_summary test').worksheet('parser')
+summary_sheet = client.open('summary_table').worksheet('parser')
 all_rows = collect_all_docs()
 performances = []
 print(all_rows)
@@ -105,11 +105,11 @@ print(all_rows)
 
 for idx, row in enumerate(all_rows):
     if row['Status'] is not '' and row['Finished On'] is not '' and row['Finished On'] is not 'Finished On':
-        keys = ('Title', 'Assignee', 'PR', 'Finished On', 'Days per test', 'Status', 'Merged', 'feature 0' )
+        keys = ('Title', 'Assignee', 'PR', 'Finished On', 'Days per test', 'Status', 'Merged' )
         try:
             start_date = datetime.strptime(row['Finished On'] , "%d/%m/%Y")
         except:
-            print(row['Finished On'], row['feature 0'])
+            # print(row['Finished On'], row['feature 0'])
             continue
         end_date = datetime.strptime(row['Started On'] , "%d/%m/%Y")
 
@@ -131,7 +131,7 @@ def add_weeks(data):
     out = []
     for idx, row in enumerate(data):
         if row['Finished On'] is not '' :
-            keys = ('Title', 'Assignee', 'PR',  'Finished On',  'Days per test', 'Status', 'Merged', 'feature 0' )
+            keys = ('Title', 'Assignee', 'PR',  'Finished On',  'Days per test', 'Status', 'Merged')
             # Create new Dict with only keys from list (Drop extra)
             new_row = {key: row[key] for key in keys}
             if not out.count(insert_week_headers(new_row.get('Finished On'))[0]):
