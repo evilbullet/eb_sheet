@@ -28,7 +28,7 @@ def insert_week_headers(test_date):
     return arr
 
 def make_datetime(lst):
-    if lst[6] == '':
+    if lst[6] == '' or lst[6] == 'Started On':
         date_str = '11/11/2000'
     else:
         date_str = lst[6]
@@ -41,7 +41,7 @@ client = gspread.authorize(creds)
 g_docs = {'Feature 1': '1MvLGkcfl5msJEb8DwQXjYaq8HVTi6cJk_JbzIKQAjrA',
          'Feature 2': '1Ht9LsUvqLiwy1IV-bgM9A7F2dnYschja8XX3EnKTMJE'}
 
-summary_sheet = client.open('new_table test').worksheet('summary')
+summary_sheet = client.open('new_summary test').worksheet('all_new')
 
 summary_list = []
 stat_line = []
